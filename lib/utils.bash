@@ -43,9 +43,8 @@ download_release() {
 	version="$1"
 	filename="$2"
 
-
 	# TODO: find out what happens if installing from arm mac
-  url="$GH_REPO/releases/download/v${version}/${TOOL_NAME}-${OS_STRING}-amd64"
+	url="$GH_REPO/releases/download/v${version}/${TOOL_NAME}-${OS_STRING}-amd64"
 
 	echo "* Downloading $TOOL_NAME release $version..."
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
@@ -55,7 +54,7 @@ install_version() {
 	local install_type="$1"
 	local version="$2"
 	local install_path="${3%/bin}/bin"
-  local filename="${TOOL_NAME}-${version}"
+	local filename="${TOOL_NAME}-${version}"
 
 	if [ "$install_type" != "version" ]; then
 		fail "asdf-$TOOL_NAME supports release installs only"
