@@ -7,6 +7,8 @@ GH_REPO="https://github.com/openshift/rosa"
 TOOL_NAME="rosa"
 TOOL_TEST="rosa help"
 
+OS_STRING="$(uname -s | tr '[:upper:]' '[:lower:]')"
+
 fail() {
 	echo -e "asdf-$TOOL_NAME: $*"
 	exit 1
@@ -41,8 +43,9 @@ download_release() {
 	version="$1"
 	filename="$2"
 
-	# TODO: Adapt the release URL convention for rosa
-  url="$GH_REPO/releases/download/v${version}/${TOOL_NAME}_${version}_${OS_STRING}_${ARCH_STRING}"
+
+	# TODO: find out what happens if installing from arm mac
+  url="$GH_REPO/releases/download/v${version}/${TOOL_NAME}-${OS_STRING}-amd64"
 
 	echo "* Downloading $TOOL_NAME release $version..."
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
@@ -60,10 +63,10 @@ install_version() {
 
 	(
 		mkdir -p "$install_path"
-		cp -r "${ASDF_DOWNLOAD_PATH}/${filename}" "$install_path"
-		# TODO: Assert rosa executable exists.
 		local tool_cmd
 		tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
+
+		cp "${ASDF_DOWNLOAD_PATH}/${filename}" "${install_path}/${tool_cmd}"
 		test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."
 
 		echo "$TOOL_NAME $version installation was successful!"
