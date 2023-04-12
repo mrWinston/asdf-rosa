@@ -16,18 +16,13 @@
 
 # Dependencies
 
-**TODO: adapt this section**
-
-- `bash`, `curl`, `tar`: generic POSIX utilities.
-- `SOME_ENV_VAR`: set this environment variable in your shell config to load the correct version of tool x.
+- `bash`, `curl`: generic POSIX utilities.
 
 # Install
 
 Plugin:
 
 ```shell
-asdf plugin add rosa
-# or
 asdf plugin add rosa https://github.com/mrWinston/asdf-rosa.git
 ```
 
