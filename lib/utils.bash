@@ -42,7 +42,7 @@ download_release() {
 	filename="$2"
 
 	# TODO: Adapt the release URL convention for rosa
-	url="$GH_REPO/archive/v${version}.tar.gz"
+  url="$GH_REPO/releases/download/v${version}/${TOOL_NAME}_${version}_${OS_STRING}_${ARCH_STRING}"
 
 	echo "* Downloading $TOOL_NAME release $version..."
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
@@ -52,6 +52,7 @@ install_version() {
 	local install_type="$1"
 	local version="$2"
 	local install_path="${3%/bin}/bin"
+  local filename="${TOOL_NAME}-${version}"
 
 	if [ "$install_type" != "version" ]; then
 		fail "asdf-$TOOL_NAME supports release installs only"
@@ -59,8 +60,7 @@ install_version() {
 
 	(
 		mkdir -p "$install_path"
-		cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
-
+		cp -r "${ASDF_DOWNLOAD_PATH}/${filename}" "$install_path"
 		# TODO: Assert rosa executable exists.
 		local tool_cmd
 		tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
